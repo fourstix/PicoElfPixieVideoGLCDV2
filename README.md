@@ -100,7 +100,16 @@ Notes
   * The GLCD with SPI is usually fast enough to update within a single frame, but if not, then during display update, interrupts  and control signals will continue, but data will not be captured for the frame. Programs will run correctly, even when data is not captured.
   * The 1802 will see frames requests at rate of about 61/second when running on the Pico/Elf v2 hardware with a 4MHz clock speed.  Different clock speeds may need to adjust the END_BUFFER_CYCLES constant in the Teensy 3.2 PicoElfVideoGLCD.ino file to maintain the expected 61 interrupts per second rate of the original Pixie Video hardware.
   * Further details are in the comments in the Teensy 3.2 PicoElfVideoGLCD.ino source code file.
-
+* **Port 4 Output**  
+  * When video is off, data output to Port 4 will be displayed on the GLCD display.
+  * OUT 4, 1802 opcode 64 (PORT4 = LOW, /OUT = LOW) will send data on the data bus to be displayed
+  * The data is displayed on the GLCD as a two digit hexadecimal value.
+  * When video is on, port 4 output data will *not* affect the Pixie Video display.  
+* **Q LED**
+  * Version 2 of the hardware provides an LED to show the value of the Q-bit.
+  * SEQ, 1802 opcode 7B, will Set Q to true and turn the LED on.
+  * REQ, 1802 opcode 7A, will Reset Q to false and turn the LED off. 
+  
 Repository Contents
 -------------------
 * **/src/PicoElfPixieVideoGLCDV2/**  
@@ -110,6 +119,7 @@ Repository Contents
   * spaceship.asm -- Joseph Weisbecker's original Elf graphics program modified for the Elf/OS
   * dma_test.asm -- Tom Pittman's DMA Test program modified for the Elf/OS
   * tvclock.asm -- Tom Pittman's DMA Test program modified for the Elf/OS
+  * output.asm -- The command *output hh* will send the hexadecimal value 'hh' to Port 4 as data output.
 * **/src/examples/bin/** -- binaries, list files and hex files for example programs  
 * **/docs** -- documentation files
   * PicoElfPixieVideoGLCDV2.pdf -- schematic for Pixie Video simulation logic using a Teensy 3.2
