@@ -168,6 +168,14 @@ Pico/Elf v2 Expansion Connector
 <tr><td>PORT4</td><td>39</td><td>40</td><td>PORT7</td></tr>
 </table>
 
+Pico/Elf Pixie Video GLCD v2 Bill of Materials
+----------------------------------------------
+[TODO: Table for BOM]
+<table>
+<tr><th>ID</th><th>Part Number</th><th colspan="2">Notes</th></tr>
+<tr><td>X1</td><td>ABC123456</td><td colspan="2">Where to find it</td></tr>
+</table>
+
   License Information
   -------------------
 
