@@ -1,5 +1,5 @@
 # PicoElfPixieVideoGLCDV2
-Second version of a Teensy 3.2 based Pixie Video simulator for the 1802 Pico/Elf v2 microcomputer using a GLCD with SPI.  The first version is located [here.](https://github.com/fourstix/PicoElfPixieVideoGLCD)
+This is the second version of a Teensy 3.2 based Pixie Video simulator for the 1802 Pico/Elf v2 microcomputer using a GLCD with SPI.  The first version is located in the [PicoElfPixieVideoGLCD](https://github.com/fourstix/PicoElfPixieVideoGLCD) repository.
 
 This code simulates a cdp1861 Pixie Video chip, using a [Teensy 3.2.](https://www.pjrc.com/store/teensy32.html)
 This [simulator](https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/docs/PicoElfPixieVideoGLCDV2.pdf)
@@ -23,7 +23,7 @@ Version Two Improvements
 ------------------------
 The second version of the Teensy 3.2 based Pixie Video simulator adds support for turning video on and off without 
 blanking the display.  When the video is off, the Pixie Video simulator will display any values output to Port 4 
-by the Pico/Elf v2 1802 Microprocessor.  In addition, the hardware now includes an LED to indicate the status of the 1802 Q-bit on the Pico/Elf data bus.  Credit goes to Wayne H. [TODO: Fix Name] for his brilliant upgrade to the original hardware design and software to add the display of Port 4 data when the video is off.
+by the Pico/Elf v2 1802 Microprocessor.  In addition, the hardware now includes an LED to indicate the status of the 1802 Q-bit on the Pico/Elf data bus.  Credit goes to Wayne Hortensius for his brilliant upgrade to the original hardware and software design that adds the display of Port 4 data when the video is off.
 
 
 Examples
@@ -74,7 +74,7 @@ Notes
   * Full details about Teensy 3.2 pin connections are in the code comments.
 * **Video Control**    
   * The 1802 Instruction INP 1 (Input from Port 1,1802 Opcode 69) will turn video processing ON.
-  * The 1802 Instruction OUT 1 (Output to Port 1, 1802 Opcode 61) will turn video processing OFF.
+  * The 1802 Instruction OUT 1 (Output to Port 1, 1802 Opcode 61) will turn video processing OFF. When Video is OFF Interrupts and DMA Requests are halted, but the display is not cleared.  An INP 1 will restart the video and another OUT 1 instruction when Video is OFF, will clear the display.  This allows one to pause and resume video.
   * The /EF1 line will go LOW four lines before a frame's DMA requests begin, and during the last four DMA request lines of a frame.
   * An Interrupt Request will be asserted (/INT = LOW) exactly 29 instruction cycles before the first DMA request
   * 128 lines of 8 DMA_OUT requests will be asserted per frame. Each DMA_OUT request takes one instruction cycle.
@@ -86,7 +86,7 @@ Notes
   * The Port 1, /INP and /Out signals on the Pico/Elf Expansion connector trigger interrupts on the Teensy 3.2 to turn video on or off.
   * Input and Output to Port 1 is used to turn video on or off.
   * INP 1, 1802 opcode 69 (PORT1 = LOW, /INP = LOW) turns video on.
-  * OUT 1, 1802 opcode 61 (PORT1 = LOW, /OUT = LOW) turns video off.
+  * OUT 1, 1802 opcode 61 (PORT1 = LOW, /OUT = LOW) turns video off if video is on, clears display if video is off.
 * **Teensy TPB Interrupt**  
   * A rising signal on TPB triggers an interrupt on the Teensy 3.2.
   * The Teensy interrupt handler will process one cycle in the video state machine
@@ -98,13 +98,13 @@ Notes
   * Any SPI 64 x 128 GLCD supported by U8G2 should work as a display.
   * If the captured video data does not change, the display will not be updated for that frame.
   * The GLCD with SPI is usually fast enough to update within a single frame, but if not, then during display update, interrupts  and control signals will continue, but data will not be captured for the frame. Programs will run correctly, even when data is not captured.
-  * The 1802 will see frames requests at rate of about 61/second when running on the Pico/Elf v2 hardware with a 4MHz clock speed.  Different clock speeds may need to adjust the END_BUFFER_CYCLES constant in the Teensy 3.2 PicoElfVideoGLCD.ino file to maintain the expected 61 interrupts per second rate of the original Pixie Video hardware.
-  * Further details are in the comments in the Teensy 3.2 PicoElfVideoGLCD.ino source code file.
+  * The 1802 will see frames requests at rate of about 61/second when running on the Pico/Elf v2 hardware with a 4MHz clock speed.  Different clock speeds may need to adjust the END_BUFFER_CYCLES constant in the Teensy 3.2 PicoElfVideoGLCDV2.ino file to maintain the expected 61 interrupts per second rate of the original Pixie Video hardware.
+  * Further details are in the comments in the Teensy 3.2 PicoElfVideoGLCDV2.ino source code file.
 * **Port 4 Output**  
   * When video is off, data output to Port 4 will be displayed on the GLCD display.
   * OUT 4, 1802 opcode 64 (PORT4 = LOW, /OUT = LOW) will send data on the data bus to be displayed
   * The data is displayed on the GLCD as a two digit hexadecimal value.
-  * When video is on, port 4 output data will *not* affect the Pixie Video display.  
+  * When video is on, data output to port 4 will *not* affect the Pixie Video display.  
 * **Q LED**
   * Version 2 of the hardware provides an LED to show the value of the Q-bit.
   * SEQ, 1802 opcode 7B, will Set Q to true and turn the LED on.
@@ -137,8 +137,8 @@ GLCD Display Connections
 <tr><td>RS</td><td>4</td><td>CS</td><td>D10</td></tr>
 <tr><td>R/W</td><td>5</td><td>MOSI</td><td>D11</td></tr>
 <tr><td>E</td><td>6</td><td>SCK</td><td>D13</td></tr>
-<tr><td>PSD</td><td>15</td><td>GND</td><td>&nbsp;</td></tr>
 <tr><td>RST</td><td>17</td><td>RST</td><td>D23</td></tr>
+<tr><td>PSD</td><td>15</td><td>GND</td><td>&nbsp;</td></tr>
 <tr><td>BLA</td><td>19</td><td>+5v</td><td>&nbsp;</td></tr>
 <tr><td>BLK</td><td>20</td><td>GND</td><td>&nbsp;</td></tr>
 </table>
