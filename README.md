@@ -46,7 +46,7 @@ with the PicoElfVideoGLCD v2 simulator.  These examples were compiled with the [
   </tr>
   <tr align="center">
     <td>Close up of 128x64 ST7920 GLCD display with 1802 Pico/Elf v2 running Tom Pittman's TV Clock program.</td>
-    <td>Close up of 128x64 ST7920 GLCD display displaying the hex value '0E' output to Port 4 by the 1802 Pico/Elf v2.</td>
+    <td>Close up of 128x64 ST7920 GLCD display displaying the hex value '0E' output to Port 4 by the 1802 Pico/Elf v2. Note that the LED is on indicating the Q-bit is true.</td>
   </tr>  
   <tr align="center">
      <td colspan="2"><img src="https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/pics/schematic.jpg"></td>
