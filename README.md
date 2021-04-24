@@ -168,12 +168,26 @@ Pico/Elf v2 Expansion Connector
 <tr><td>PORT4</td><td>39</td><td>40</td><td>PORT7</td></tr>
 </table>
 
-Pico/Elf Pixie Video GLCD v2 Bill of Materials
-----------------------------------------------
-[TODO: Table for BOM]
+Bill of Materials
+-----------------
 <table>
-<tr><th>ID</th><th>Part Number</th><th colspan="2">Notes</th></tr>
-<tr><td>X1</td><td>ABC123456</td><td colspan="2">Where to find it</td></tr>
+<tr><th colspan = "2">Part #</th><th>Qty</th><th>Description</th></tr>
+<tr><td colspan = "2">U1</td><td>1</td><td>LM7805 5v Regulator</td></tr>
+<tr><td colspan = "2">U2</td><td>1</td><td>L4HC32 Quad OR Gate</td></tr>
+<tr><td colspan = "2">U3</td><td>1</td><td>L4HC374 Octal D Flip-flop</td></tr>
+<tr><td colspan = "2">U4</td><td>1</td><td>Teensy 3.2 Development Board</td></tr>
+<tr><td colspan = "2">Q1</td><td>1</td><td>2N3904 NPN Transistor</td></tr>
+<tr><td colspan = "2">R1</td><td>1</td><td>33k ohm 1/4 Watt Resistor</td></tr>
+<tr><td colspan = "2">R2</td><td>1</td><td>10k ohm 1/4 Watt Resistor</td></tr>
+<tr><td colspan = "2">R3,R4</td><td>2</td><td>1k ohm 1/4 Watt Resistors</td></tr>
+<tr><td colspan = "2">C1</td><td>1</td><td>0.33 uF Capacitor</td></tr>
+<tr><td colspan = "2">C2-C5</td><td>4</td><td>0.1 uF Capacitors</td></tr>
+<tr><td colspan = "2">D1</td><td>1</td><td>5mm Red LED</td></tr>
+<tr><td colspan = "2">J1</td><td>1</td><td>PJ-202A 2x5.5mm 3 pin Power Jack</td></tr>
+<tr><td colspan = "2">J2</td><td>1</td><td>2x20 Male 40 Pin Connector, 2.54mm spacing</td></tr>
+<tr><td colspan = "2">J3</td><td>1</td><td>2x3 Male 6 Pin Connector, 2.54mm spacing</td></tr>
+<tr><td colspan = "2">J4</td><td>1</td><td>20 Female Pin Header, 2.54mm spacing</td></tr>
+<tr><td colspan = "2">J5</td><td>1</td><td>2 Male Pin Connector, 2.54mm spacing</td></tr>
 </table>
 
   License Information
