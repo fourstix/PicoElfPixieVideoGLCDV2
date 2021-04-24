@@ -33,16 +33,16 @@ with the PicoElfVideoGLCD v2 simulator.  These examples were compiled with the [
 
 <table class="table table-hover table-striped table-bordered">
   <tr align="center">
-   <td><img style="display:block;" src="https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/pics/spaceship.jpg"></td>
-   <td><img style="display:block;" src="https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/pics/dma_test.jpg"></td>
+   <td><img src="https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/pics/spaceship.jpg"></td>
+   <td><img src="https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/pics/dma_test.jpg"></td>
   </tr>
   <tr align="center">
     <td>Close up of 128x64 ST7920 GLCD display with 1802 Pico/Elf v2 running Cosmac Elf Spaceship program.</td>
     <td>Close up of 128x64 ST7920 GLCD display with 1802 Pico/Elf v2 running Tom Pittman's DMA Test program.<td>    
   </tr>
   <tr align="center">
-   <td><img style="display:block;" src="https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/pics/tvclock.jpg"></td>
-   <td><img style="display:block;" src="https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/pics/port4out.jpg"></td>
+   <td><img src="https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/pics/tvclock.jpg"></td>
+   <td><img src="https://github.com/fourstix/PicoElfPixieVideoGLCDV2/blob/main/pics/port4out.jpg"></td>
   </tr>
   <tr align="center">
     <td>Close up of 128x64 ST7920 GLCD display with 1802 Pico/Elf v2 running Tom Pittman's TV Clock program.</td>
