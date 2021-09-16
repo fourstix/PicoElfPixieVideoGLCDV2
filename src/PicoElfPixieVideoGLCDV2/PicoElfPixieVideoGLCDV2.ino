@@ -59,6 +59,7 @@
  * Add: Because there is no reset signal on the Pico/Elf Expansion connector,
  *       add RESET_PIN to external push button to provide video reset function.
  * Fix: Adjust END_BUFFER_CYCLES for Pico/Elf v2 clock speed
+ * Fix: Reworked DMA logic to fix timing issue that caused random display static
  */
 
 #include <Arduino.h>
@@ -448,8 +449,6 @@ void doVideoState() {
   //flag to reset counter rather than increment
   static boolean reset_counter = false;
   
-  //flag to capture a frame of video data
-  static boolean capture_frame = false;
   //flag to capture a DMA line of video data
   static boolean capture_line = false;
   //Up to 128 dma lines in a video
@@ -535,9 +534,7 @@ void doVideoState() {
           state = VIDEO_DMA;        
           reset_counter = true;
           dma_line = 0;
-          capture_line = false;         
-          //Capture this frame only if finished redrawing display
-          capture_frame = !redraw;                 
+          capture_line = false;                         
           changed = false;        
         } //if isDmaAck
       } else {      
@@ -617,13 +614,11 @@ void doVideoState() {
       //At the end of the Line the DMA should be acknowledged for the next line
       } else if (cycles > LINE_DMA_ON) {
         /* 
-         * At end of each line, check that dma acknowledged for next line.
+         * At end of each line, check that dma ack to capture next line.
          * Except there is no dma ack at end of last line, because it's 
          * finished reading all the video data required for the display.
-         * If DMA isn't acknowledged either this is the end of the last line 
-         * in the frame or otherwise just wait until it is acknowledged.
          */        
-        if (isDmaAck()) {
+        if (dma_line < LAST_IN_FRAME) {   
           dma_line++;
           /* 
            * Capture data on last line of each repeated set of lines. 
@@ -634,16 +629,15 @@ void doVideoState() {
            * is captured.  To avoid flicker, don't  capture anything, if 
            * the display is still redrawing.
            */ 
-          if (capture_frame) { 
-            //Capture second line in set of two repeated lines
-            capture_line = (dma_line % 2 == 1);
-          } //if capture frame
+          //If DMA, capture second line in set of two repeated lines
+          capture_line = isDmaAck() && (dma_line % 2 == 1);
+
           reset_counter = true;          
           if (dma_line > LINE_SIGNAL_END) {
             //set /EF1 low during last 4 lines 
             setExternalFlag(true);
           } //if dma_line > LINE_SIGNAL_END            
-        } else if (dma_line >= LAST_IN_FRAME) {     
+        } else {     
             //After the end of last line, end the video frame              
             state = VIDEO_END;            
             reset_counter = true; 
@@ -651,7 +645,7 @@ void doVideoState() {
 //            #if DEBUG 
 //              Serial.println("End of DMA");
 //            #endif            
-        } //if isDmaAck else if LAST_IN_FRAME
+        } //if else dma_line < LAST_IN_FRAME
       }//if-else cycles
     break;
     
@@ -698,7 +692,6 @@ void doVideoState() {
       reset_counter = true;
       //Clear all variables
       dma_line = 0;
-      capture_frame = false;
       capture_line = false;
       //First frame always considered as changed
       changed = false;
