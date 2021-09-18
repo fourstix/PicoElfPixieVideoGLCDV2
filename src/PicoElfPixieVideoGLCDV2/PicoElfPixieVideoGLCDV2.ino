@@ -553,7 +553,7 @@ void doVideoState() {
  * via DMA requests to the 1802.  Eight bytes are read via DMA per line, 
  * followed by 6 instructions cycles before the start of the next line. 
  * 
- * Only data from the last line of each group of four is captured as video 
+ * Only data from the last line of each group of two is captured as video 
  * data for the GLCD display.  But DMA is asserted for eight cycles on every
  * line so that the timing is maintained.  The cycle counter is reset for
  * each line, for 128 lines. The external flag /EF1 is on for the last four
@@ -614,8 +614,8 @@ void doVideoState() {
       //At the end of the Line the DMA should be acknowledged for the next line
       } else if (cycles > LINE_DMA_ON) {
         /* 
-         * At end of each line, check that dma ack to capture next line.
-         * Except there is no dma ack at end of last line, because it's 
+         * At end of each line, check that dma ack'd to capture next line.
+         * Except there is no dma ack at end of last line, because it has 
          * finished reading all the video data required for the display.
          */        
         if (dma_line < LAST_IN_FRAME) {   
@@ -626,8 +626,7 @@ void doVideoState() {
            * usually repeated two times.  (For a 32x64 display resolution, 
            * each line of video data is repeated four times.) Only the last 
            * line actually appears on the display, so only the last line 
-           * is captured.  To avoid flicker, don't  capture anything, if 
-           * the display is still redrawing.
+           * is captured. 
            */ 
           //If DMA, capture second line in set of two repeated lines
           capture_line = isDmaAck() && (dma_line % 2 == 1);
